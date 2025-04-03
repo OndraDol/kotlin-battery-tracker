@@ -30,7 +30,7 @@
             android:layout_alignParentEnd="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Settings"
-            android:src="@drawable/ic_settings"
+            android:src="@drawable/ic_reset"
             app:tint="@android:color/white" />
 
     </RelativeLayout>
@@ -142,7 +142,6 @@
                 android:src="@drawable/ic_arrow_down"
                 android:contentDescription="Arrow down icon"
                 android:layout_margin="8dp"/>
-
             <ImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
@@ -164,18 +163,16 @@
             android:text="Graphs"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
-        <View
+        <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/levelChart"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:background="#EEEEEE"
             android:layout_marginTop="8dp"/>
 
-        <View
+        <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/tempChart"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:background="#EEEEEE"
             android:layout_marginTop="8dp"/>
     </LinearLayout>
 
@@ -191,29 +188,6 @@
             android:text="Controls/Settings"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/battery_level"
-                style="@style/TextAppearance.MaterialComponents.Headline3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0%"
-                android:textColor="@color/purple_500"
-                app:drawableStartCompat="@drawable/ic_battery" />
-
-            <TextView
-                android:id="@+id/battery_status"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Charging"
-                android:textColor="@color/purple_700" />
         </LinearLayout>
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -242,19 +216,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Remaining time: N/A"
+            android:text="@string/remaining_time_na"
             android:textColor="@color/purple_700" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/reset_button"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Reset Stats"
-            android:textAllCaps="false"
-            app:backgroundTint="@color/purple_500"
-            app:icon="@drawable/ic_reset"
-            app:iconGravity="textStart" />
     </LinearLayout>
-</LinearLayout>

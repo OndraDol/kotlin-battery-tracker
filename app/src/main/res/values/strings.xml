@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Batttery tracker</string>
+    <string name="remaining_time_na">Remaining time: N/A</string>
+    <string name="remaining_time_format">Remaining time: %1$d h %2$d min</string>
 </resources>

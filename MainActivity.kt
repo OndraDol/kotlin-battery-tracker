@@ -18,7 +18,9 @@ class MainActivity : AppCompatActivity() {
     private var currentCharge = 0.0
     private var lastBatteryLevel = -1
     private var savedChargeCycles = 0.0
-    
+    private var cumulativeChargePercentage = 0f
+    private const val CUMULATIVE_CHARGE = "cumulative_charge"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,21 +33,35 @@ class MainActivity : AppCompatActivity() {
         // Load saved charge cycles
         savedChargeCycles = getSharedPreferences("battery_prefs", Context.MODE_PRIVATE)
             .getFloat("charge_cycles", 0.0).toDouble()
+        cumulativeChargePercentage = getSharedPreferences("battery_prefs", Context.MODE_PRIVATE)
+            .getFloat(CUMULATIVE_CHARGE, 0f)
         updateChargeCyclesDisplay()
-        
+
         // Register battery broadcast receiver
         val batteryReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-                val batteryLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0)
-                
-                if (lastBatteryLevel != -1 && batteryLevel > lastBatteryLevel) {
-                    val chargePercentage = batteryLevel - lastBatteryLevel
-                    currentCharge += chargePercentage * 0.01
-                    if (currentCharge >= 0.3) {
-                        savedChargeCycles += currentCharge
-                        currentCharge = 0.0
-                        updateChargeCyclesDisplay()
+                val batteryLevel: Int = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0)
+                val status: Int = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
+                val isCharging: Boolean = status == BatteryManager.BATTERY_STATUS_CHARGING
+
+                val lastLevel = lastBatteryLevel
+
+                if (isCharging && lastLevel != -1 && batteryLevel > lastLevel) {
+                    val chargedAmount = batteryLevel - lastLevel
+                    cumulativeChargePercentage += chargedAmount
+
+                    if (cumulativeChargePercentage >= 100f) {
+                        val cyclesToAdd = cumulativeChargePercentage / 100f
+                        savedChargeCycles += cyclesToAdd
+                        cumulativeChargePercentage %= 100f
                     }
+
+                    val prefs = context.getSharedPreferences("battery_prefs", Context.MODE_PRIVATE).edit()
+                    prefs.putFloat("charge_cycles", savedChargeCycles.toFloat())
+                    prefs.putFloat(CUMULATIVE_CHARGE, cumulativeChargePercentage)
+                    prefs.apply()
+
+                    updateChargeCyclesDisplay()
                 }
                 lastBatteryLevel = batteryLevel
                 batteryLevelTextView.text = "Battery Level: ${batteryLevel}%"

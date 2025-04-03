@@ -48,6 +48,6 @@ dependencies {
     implementation("com.github.PhilJay:MPAndroidChart:3.1.0") {
         exclude(group = "com.android.support", module = "support-v4")
     }
-}
 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+}

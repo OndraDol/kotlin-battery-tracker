@@ -29,15 +29,18 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
-    private val PREF_NAME = "BatteryInfo"
-    private val CHARGE_CYCLES = "chargeCycles"
-    private val DARK_MODE = "darkMode"
-    private val NOTIFICATIONS = "notifications"
-    private val FLOATING_WINDOW = "floatingWindow"
-    private val OVERHEATING_ALARM = "overheatingAlarm"
-    private val FAHRENHEIT = "fahrenheit"
+    companion object {
+        private const val PREF_NAME = "BatteryInfo"
+        private const val CHARGE_CYCLES = "chargeCycles"
+        private const val DARK_MODE = "darkMode"
+        private const val NOTIFICATIONS = "notifications"
+        private const val FLOATING_WINDOW = "floatingWindow"
+        private const val OVERHEATING_ALARM = "overheatingAlarm"
+        private const val FAHRENHEIT = "fahrenheit"
+    }
 
     private lateinit var sharedPreferences: SharedPreferences
+    //private lateinit var binding: ActivityMainBinding
     private lateinit var batteryLevelText: TextView
     private lateinit var chargeCyclesText: TextView
     private lateinit var statusText: TextView
@@ -48,6 +51,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var levelText: TextView
     private lateinit var levelChart: LineChart
     private lateinit var tempChart: LineChart
+    private lateinit var settingsButton: ImageButton
     private lateinit var settingsButton: ImageButton
 
     private val batteryLevelEntries = ArrayList<Entry>()
@@ -118,15 +122,15 @@ class MainActivity : AppCompatActivity() {
         // Initialize with actual values
         updateBatteryInfo(batteryPct.toInt(), chargeCycles)
 
-        resetButton.setOnClickListener {
-            // Reset charge cycles and initial level
-            scope.launch {
-                withContext(Dispatchers.IO) {
-                    sharedPreferences.edit().putFloat(CHARGE_CYCLES, 0.0f).apply()
-                }
-                updateBatteryInfo(0, 0.0f)
-            }
-        }
+        // resetButton.setOnClickListener { // Removed reset button
+        //     // Reset charge cycles and initial level
+        //     scope.launch {
+        //         withContext(Dispatchers.IO) {
+        //             sharedPreferences.edit().putFloat(CHARGE_CYCLES, 0.0f).apply()
+        //         }
+        //         updateBatteryInfo(0, 0.0f)
+        //     }
+        // }
 
         // Register Battery Change Receiver
         val batteryIntentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
@@ -185,18 +189,91 @@ class MainActivity : AppCompatActivity() {
         fahrenheitSwitch.setOnCheckedChangeListener { _, isChecked ->
             sharedPreferences.edit().putBoolean(FAHRENHEIT, isChecked).apply()
         }
+
+        // Save initial charge cycles
+        /*dialogLayout.findViewById<Button>(R.id.save_button).setOnClickListener {
+            val initialCyclesInput = dialogLayout.findViewById<TextInputEditText>(R.id.etInitialCycles).text.toString()
+            try {
+                val initialCycles = initialCyclesInput.toFloat()
+                sharedPreferences.edit().putFloat(CHARGE_CYCLES, initialCycles).apply()
+                chargeCycles = initialCycles
+                updateBatteryInfo(levelText.text.toString().replace("Level: ", "").replace("%", "").toInt(), chargeCycles) // Update displayed charge cycles
+                alertDialog.dismiss()
+            } catch (e: NumberFormatException) {
+                // Handle invalid input, maybe show an error message
+                Log.e("SettingsDialog", "Invalid charge cycles input: ${e.message}")
+            }
+        }*/
+    }
     }
 
     private fun initCharts() {
         // Initialize Level Chart
         val levelDataSet = LineDataSet(batteryLevelEntries, "Battery Level")
+        levelDataSet.color = getColor(R.color.purple_500)
+        levelDataSet.fillColor = getColor(R.color.purple_200)
+        levelDataSet.setDrawFilled(true)
         val levelData = LineData(levelDataSet)
         levelChart.data = levelData
-        levelChart.description.text = "Battery Level (%)"
+        levelChart.description.isEnabled = false
+        levelChart.legend.isEnabled = false
         levelChart.xAxis.labelRotationAngle = 0f
         levelChart.invalidate()
+        levelChart.setBackgroundColor(getColor(R.color.cardview_dark_background)) // Example background color
+        levelChart.setGridBackgroundColor(getColor(R.color.cardview_shadow_end_color)) // Example grid color
+
+        // Initialize Temperature Chart
+        val tempDataSet = LineDataSet(temperatureEntries, "Temperature")
+        tempDataSet.fillColor = getColor(R.color.teal_700)
+        tempDataSet.lineWidth = 2f // Set line thickness
+        tempDataSet.color = getColor(R.color.teal_200)
+        val tempData = LineData(tempDataSet)
+        tempDataSet.setDrawFilled(true)
+        tempDataSet.setDrawCircles(true) // Enable circles
+        tempDataSet.circleRadius = 3f // Adjust circle radius
+        tempDataSet.setCircleColor(getColor(R.color.white)) // Circle color
+        tempDataSet.setDrawCircleHole(true) // Enable circle hole
+        tempDataSet.circleHoleColor = getColor(R.color.cardview_dark_background) // Hole color
+        tempChart.setBackgroundColor(getColor(R.color.cardview_dark_background)) // Example background color
+        tempChart.legend.textColor = getColor(R.color.white) // Legend text color
+        tempChart.xAxis.textColor = getColor(R.color.white) // X-Axis text color
+        tempChart.data = tempData
+        tempChart.setGridBackgroundColor(getColor(R.color.cardview_shadow_end_color)) // Example grid color
+
+        // X-Axis formatting for time
+        tempChart.xAxis.valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                val sdf = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+                return sdf.format(Date(value.toLong()))
+            }
+        }
+        tempChart.xAxis.textColor = getColor(R.color.white) // Example axis text color
+
+        // Y-Axis formatting for temperature (°C)
+        tempChart.axisLeft.valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return "$value°C"
+            }
+        }
+        tempChart.axisLeft.textColor = getColor(R.color.white) // Example axis text color
+        tempChart.axisRight.isEnabled = false // Disable right Y-axis
+        tempChart.setGridBackgroundColor(getColor(R.color.cardview_shadow_end_color)) // Example grid color
+        tempChart.invalidate()
     }
 
+    val remainingTimeText = findViewById<TextView>(R.id.remaining_time)
+    val batteryManager = context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
+    val chargeTimeRemaining = batteryManager.computeChargeTimeRemaining()
+
+    val remainingTimeString = if (chargeTimeRemaining > 0) {
+        val hours = chargeTimeRemaining / 3600000
+        val minutes = (chargeTimeRemaining % 3600000) / 60000
+        getString(R.string.remaining_time_format, hours, minutes)
+    } else {
+        getString(R.string.remaining_time_na)
+    }
+
+    remainingTimeText.text = remainingTimeString
     private val batteryReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val status: Int = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
@@ -239,7 +316,8 @@ class MainActivity : AppCompatActivity() {
             healthText.text = "Health: $healthString"
             powerText.text = "Power Source: $pluggedString"
             voltageText.text = "Voltage: ${voltageMV}mV"
-            temperatureText.text = "Temperature: ${temperatureC} °C"
+            val temperatureFahrenheit = (temperatureC * 9/5) + 32
+            temperatureText.text = if (sharedPreferences.getBoolean(FAHRENHEIT, false)) "Temperature: ${String.format("%.1f", temperatureFahrenheit)} °F" else "Temperature: ${temperatureC} °C"
             levelText.text = "Level: ${batteryPct}%"
 
             Log.d("Battery", "Level: ${batteryPct}%")
@@ -274,8 +352,15 @@ class MainActivity : AppCompatActivity() {
         tempChart.data.notifyDataChanged()
 
         // Refresh chart
-        levelChart.invalidate()
         tempChart.invalidate()
+
+        // Limit data points to 200
+        if (batteryLevelEntries.size > 200) {
+            batteryLevelEntries.removeAt(0)
+        }
+        if (temperatureEntries.size > 200) {
+            temperatureEntries.removeAt(0)
+        }
     }
 
     private fun updateBatteryInfo(level: Int, cycles: Float) {
