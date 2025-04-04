@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: ActivityMainBinding
-    private lateinit var settingsButton: ImageButton
+    //private lateinit var settingsButton: ImageButton // This is not needed with ViewBinding
 
     private val batteryLevelEntries = ArrayList<Entry>()
     private val temperatureEntries = ArrayList<Entry>()
@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
     private val scope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -85,12 +86,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun registerBatteryReceiver() {
-        settingsButton = binding.settingsButton
         val batteryStatus = applicationContext.registerReceiver(null,
             IntentFilter(Intent.ACTION_BATTERY_CHANGED))
-        val level = batteryStatus?.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) ?: -1
-        val scale = batteryStatus?.getIntExtra(BatteryManager.EXTRA_SCALE, -1) ?: -1
-        val batteryPct = if (level != -1 && scale != -1) level * 100 / scale.toFloat() else 0f
+        val batteryPct = if (batteryStatus != null) {
+            val level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
+            val scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
+            if (level != -1 && scale != -1) level * 100 / scale.toFloat() else 0f
+        } else {
+            0f
+        }
 
         scope.launch {
             chargeCycles = withContext(Dispatchers.IO) {
@@ -117,7 +121,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupSettingsButton() {
-        settingsButton.setOnClickListener {
+        binding.settingsButton.setOnClickListener {
             showSettingsDialog()
         }
     }
@@ -126,7 +130,7 @@ class MainActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         val inflater = layoutInflater
         val dialogLayout = inflater.inflate(R.layout.dialog_settings, null)
-        
+
         val darkModeSwitch = dialogLayout.findViewById<SwitchMaterial>(R.id.dark_theme_switch)
         val notificationsSwitch = dialogLayout.findViewById<SwitchMaterial>(R.id.notifications_switch)
         val floatingWindowSwitch = dialogLayout.findViewById<SwitchMaterial>(R.id.floating_window_switch)
@@ -218,7 +222,6 @@ class MainActivity : AppCompatActivity() {
             description.isEnabled = false
             legend.isEnabled = false
             xAxis.labelRotationAngle = 0f
-            // Remove direct background/grid color settings using problematic R.color references
             invalidate()
         }
 
@@ -237,7 +240,6 @@ class MainActivity : AppCompatActivity() {
         val tempData = LineData(tempDataSet)
         binding.tempChart.apply {
             data = tempData
-            // Remove direct background/grid/text color settings using problematic R.color references
 
             // X-Axis formatting for time
             xAxis.valueFormatter = object : ValueFormatter() {
@@ -351,8 +353,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateBatteryInfo(level: Int, cycles: Float) {
-        binding.batteryLevelText.text = getString(R.string.battery_level_format, level)
-        binding.chargeCycles.text = getString(R.string.charge_cycles_format, String.format("%.2f", cycles))
+        binding.tvLevel.text = getString(R.string.battery_level_format, level)
+        binding.chargeCycles.text = String.format(getString(R.string.charge_cycles_format), cycles)
     }
 
     private fun updateRemainingTime() {
