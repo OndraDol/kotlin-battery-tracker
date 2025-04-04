@@ -2,4 +2,23 @@
     <string name="app_name">Batttery tracker</string>
     <string name="remaining_time_na">Remaining time: N/A</string>
     <string name="remaining_time_format">Remaining time: %1$d h %2$d min</string>
+    <string name="charging">Charging</string>
+    <string name="discharging">Discharging</string>
+    <string name="full">Full</string>
+    <string name="not_charging">Not Charging</string>
+    <string name="unknown">Unknown</string>
+    <string name="good">Good</string>
+    <string name="overheat">Overheat</string>
+    <string name="dead">Dead</string>
+    <string name="over_voltage">Over Voltage</string>
+    <string name="unspecified_failure">Unspecified Failure</string>
+    <string name="status_format">Status: %1$s</string>
+    <string name="health_format">Health: %1$s</string>
+    <string name="power_source_format">Power Source: %1$s</string>
+    <string name="voltage_format">Voltage: %1$d mV</string>
+    <string name="temperature_fahrenheit_format">Temperature: %1$.1f °F</string>
+    <string name="temperature_celsius_format">Temperature: %1$.1f °C</string>
+    <string name="level_format">Level: %1$.0f%%</string>
+    <string name="battery_level_format">Battery Level: %1$d%%</string>
+    <string name="charge_cycles_format">Charge Cycles: %1$.2f</string>
 </resources>

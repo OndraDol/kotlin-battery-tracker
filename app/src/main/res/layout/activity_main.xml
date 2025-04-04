@@ -30,151 +30,181 @@
             android:layout_alignParentEnd="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Settings"
-            android:src="@drawable/ic_reset"
+            android:src="@drawable/ic_settings"
             app:tint="@android:color/white" />
 
     </RelativeLayout>
 
--------
-
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Battery Status"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
-
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:rowCount="3">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Status:" />
-
-            <TextView
-                android:id="@+id/tvStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="N/A" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Health:" />
-
-            <TextView
-                android:id="@+id/tvHealth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="N/A" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Power:" />
-
-            <TextView
-                android:id="@+id/tvPower"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="N/A" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Voltage:" />
-
-            <TextView
-                android:id="@+id/tvVoltage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="N/A" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Temperature:" />
-
-            <TextView
-                android:id="@+id/tvTemperature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="N/A" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Level:" />
-
-            <TextView
-                android:id="@+id/tvLevel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="N/A" />
-        </GridLayout>
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="@color/cardview_dark_background"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp"
-            android:gravity="center">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_eye"
-                android:contentDescription="Eye icon"
-                android:layout_margin="8dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Battery Status"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="@android:color/white" />
 
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_arrow_down"
-                android:contentDescription="Arrow down icon"
-                android:layout_margin="8dp"/>
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_settings"
-                android:contentDescription="Settings icon"
-                android:layout_margin="8dp"/>
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:rowCount="3">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Status:"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="N/A"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Health:"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:id="@+id/tvHealth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="N/A"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Power:"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:id="@+id/tvPower"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="N/A"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Voltage:"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:id="@+id/tvVoltage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="N/A"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Temperature:"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:id="@+id/tvTemperature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="N/A"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Level:"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:id="@+id/tvLevel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="N/A"
+                    android:textColor="@android:color/white"/>
+            </GridLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="Eye icon"
+                    android:src="@drawable/ic_eye"
+                    android:layout_margin="8dp"/>
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="Arrow down icon"
+                    android:src="@drawable/ic_arrow_down"
+                    android:layout_margin="8dp"/>
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="Settings icon"
+                    android:src="@drawable/ic_settings"
+                    android:layout_margin="8dp"/>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="@color/cardview_dark_background"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Graphs"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/levelChart"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginTop="8dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Graphs"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="@android:color/white"/>
 
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/tempChart"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginTop="8dp"/>
-    </LinearLayout>
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/levelChart"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="8dp"/>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/tempChart"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -188,34 +218,34 @@
             android:text="Controls/Settings"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
-        </LinearLayout>
-
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/health_indicator"
-            style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-            android:layout_width="match_parent"
-            android:layout_height="8dp"
-            android:layout_marginTop="32dp"
-            android:indeterminate="false"
-            app:indicatorColor="@color/green_500"
-            app:trackColor="@color/green_100"
-            app:trackCornerRadius="4dp" />
-
-        <TextView
-            android:id="@+id/charge_cycles"
-            style="@style/TextAppearance.MaterialComponents.Body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="0.00 charge cycles"
-            android:textColor="@color/purple_700" />
-
-        <TextView
-            android:id="@+id/remaining_time"
-            style="@style/TextAppearance.MaterialComponents.Body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/remaining_time_na"
-            android:textColor="@color/purple_700" />
     </LinearLayout>
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/health_indicator"
+        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_marginTop="32dp"
+        android:indeterminate="false"
+        app:indicatorColor="@color/green_500"
+        app:trackColor="@color/green_100"
+        app:trackCornerRadius="4dp" />
+
+    <TextView
+        android:id="@+id/charge_cycles"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="0.00 charge cycles"
+        android:textColor="@color/purple_700" />
+
+    <TextView
+        android:id="@+id/tvRemainingTime"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/remaining_time_na"
+        android:textColor="@color/purple_700" />
+</LinearLayout>
